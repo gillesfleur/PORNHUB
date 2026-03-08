@@ -6,11 +6,14 @@ import { VideoCard } from '../components/VideoCard';
 import { Pagination } from '../components/Pagination';
 import { tags } from '../data/tags';
 import { videos } from '../data/videos';
-import { ArrowUpDown, Zap, Star, TrendingUp, Tag as TagIcon } from 'lucide-react';
+import { ArrowUpDown, Zap, Star, TrendingUp, Tag as TagIcon, SlidersHorizontal } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { FilterSidebar, MobileFilterDrawer } from '../components/FilterSidebar';
 
 type SortOption = 'popular' | 'recent' | 'top-rated' | 'longest' | 'shortest';
 type DurationFilter = 'all' | '0-10' | '10-30' | '30+';
+
+import { SEO } from '../components/SEO';
 
 export const TagPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -18,6 +21,7 @@ export const TagPage: React.FC = () => {
   const [durationFilter, setDurationFilter] = useState<DurationFilter>('all');
   const [hdOnly, setHdOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const itemsPerPage = 12;
 
   const tag = tags.find(t => t.slug === slug);
@@ -25,7 +29,7 @@ export const TagPage: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (tag) {
-      document.title = `Vidéos ${tag.name} - VibeTube`;
+      // SEO component handles title
     }
   }, [tag]);
 
@@ -118,6 +122,10 @@ export const TagPage: React.FC = () => {
       animate={{ opacity: 1 }}
       className="pb-20"
     >
+      <SEO 
+        title={`Vidéos ${tag.name}`} 
+        description={`Regardez les meilleures vidéos tagguées avec "${tag.name}" sur VibeTube.`} 
+      />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="py-6">
@@ -167,11 +175,26 @@ export const TagPage: React.FC = () => {
         <AdBanner size="leaderboard" position="tag-top" className="mb-8" />
 
         <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filter Sidebar (Desktop) */}
+          <FilterSidebar 
+            onApply={() => {}} 
+            onReset={() => {}} 
+          />
+
           {/* Main Content */}
           <div className="flex-grow">
             {/* Filters & Sort Bar */}
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-surface/50 p-4 rounded-2xl border border-muted/10 mb-8">
               <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+                {/* Mobile Filter Button */}
+                <button 
+                  onClick={() => setIsFilterDrawerOpen(true)}
+                  className="lg:hidden flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20"
+                >
+                  <SlidersHorizontal size={14} />
+                  Filtres
+                </button>
+
                 {/* Sort Dropdown */}
                 <div className="flex items-center gap-2">
                   <ArrowUpDown size={16} className="text-muted" />
@@ -298,6 +321,10 @@ export const TagPage: React.FC = () => {
           </aside>
         </div>
       </div>
+      <MobileFilterDrawer 
+        isOpen={isFilterDrawerOpen} 
+        onClose={() => setIsFilterDrawerOpen(false)} 
+      />
     </motion.div>
   );
 };

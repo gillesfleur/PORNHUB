@@ -6,4 +6,5 @@ export const currentUser: UserProfile = {
   email: 'alex@example.com',
   avatar: 'https://picsum.photos/seed/avatar/100/100',
   isPremium: false,
+  role: 'user',
 };

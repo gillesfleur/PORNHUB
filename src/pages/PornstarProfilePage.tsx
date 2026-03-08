@@ -28,6 +28,8 @@ import { motion, AnimatePresence } from 'motion/react';
 type TabType = 'videos' | 'about' | 'photos';
 type SortOption = 'recent' | 'popular' | 'top-rated';
 
+import { SEO } from '../components/SEO';
+
 export const PornstarProfilePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ export const PornstarProfilePage: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (actor) {
-      document.title = `${actor.name} - Profil Pornstar - VibeTube`;
+      // SEO component handles title
     }
   }, [actor]);
 
@@ -131,6 +133,10 @@ export const PornstarProfilePage: React.FC = () => {
       animate={{ opacity: 1 }}
       className="pb-20"
     >
+      <SEO 
+        title={actor.name} 
+        description={`Découvrez le profil de ${actor.name} sur VibeTube. Vidéos, photos et biographie.`} 
+      />
       {/* Hero Section */}
       <div className="relative mb-24">
         {/* Cover Banner */}

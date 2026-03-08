@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 
 export const Footer: React.FC = () => {
-  const { toggleLogin, isLoggedIn } = useAuth();
   return (
     <footer className="bg-surface border-t border-muted mt-12">
       <div className="container mx-auto px-4 py-12">
@@ -25,10 +24,11 @@ export const Footer: React.FC = () => {
           <div>
             <h3 className="text-main font-bold mb-4 uppercase text-sm tracking-wider">Pages légales</h3>
             <ul className="space-y-2 text-muted text-sm">
-              <li><a href="#" className="hover:text-primary">CGU</a></li>
-              <li><a href="#" className="hover:text-primary">Politique de confidentialité</a></li>
-              <li><a href="#" className="hover:text-primary">DMCA / Signalement</a></li>
-              <li><a href="#" className="hover:text-primary">2257 Statement</a></li>
+              <li><Link to="/terms" className="hover:text-primary">CGU</Link></li>
+              <li><Link to="/privacy" className="hover:text-primary">Politique de confidentialité</Link></li>
+              <li><button onClick={() => window.dispatchEvent(new CustomEvent('reopen-cookie-consent'))} className="hover:text-primary text-left">Gérer les cookies</button></li>
+              <li><Link to="/dmca" className="hover:text-primary">DMCA / Signalement</Link></li>
+              <li><Link to="/statement" className="hover:text-primary">2257 Statement</Link></li>
             </ul>
           </div>
 
@@ -36,10 +36,10 @@ export const Footer: React.FC = () => {
           <div>
             <h3 className="text-main font-bold mb-4 uppercase text-sm tracking-wider">À propos & Contact</h3>
             <ul className="space-y-2 text-muted text-sm">
-              <li><a href="#" className="hover:text-primary">Qui sommes-nous ?</a></li>
-              <li><a href="#" className="hover:text-primary">Contactez-nous</a></li>
-              <li><a href="#" className="hover:text-primary">Publicité</a></li>
-              <li><a href="#" className="hover:text-primary">Partenaires</a></li>
+              <li><Link to="/about" className="hover:text-primary">Qui sommes-nous ?</Link></li>
+              <li><Link to="/contact" className="hover:text-primary">Contactez-nous</Link></li>
+              <li><Link to="/advertising" className="hover:text-primary">Publicité</Link></li>
+              <li><Link to="/partners" className="hover:text-primary">Partenaires</Link></li>
             </ul>
           </div>
 
@@ -63,15 +63,6 @@ export const Footer: React.FC = () => {
 
         <div className="border-t border-muted mt-12 pt-8 text-center text-xs text-muted relative">
           <p>© 2026 VibeTube. Tous droits réservés. Le contenu de ce site est simulé à des fins de démonstration.</p>
-          
-          {/* Developer Toggle - Hidden in plain sight */}
-          <button 
-            onClick={toggleLogin}
-            className="absolute bottom-0 right-0 p-2 opacity-0 hover:opacity-10 transition-opacity cursor-default"
-            title="Dev Toggle Auth"
-          >
-            <ShieldCheck size={12} />
-          </button>
         </div>
       </div>
     </footer>

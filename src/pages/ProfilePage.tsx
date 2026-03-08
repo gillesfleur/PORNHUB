@@ -6,12 +6,14 @@ import { useAuth } from '../lib/AuthContext';
 import { UserSidebar } from '../components/UserSidebar';
 import { Breadcrumb } from '../components/Breadcrumb';
 
+import { SEO } from '../components/SEO';
+
 export const ProfilePage: React.FC = () => {
   const { user } = useAuth();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Mon Profil - VibeTube';
+    // SEO component handles title
   }, []);
 
   const stats = [
@@ -31,6 +33,7 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO title="Mon Profil" description="Gérez votre profil et vos préférences sur VibeTube." />
       <Breadcrumb items={[{ label: 'Mon profil', path: '/profile' }]} />
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">

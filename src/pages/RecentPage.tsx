@@ -4,12 +4,15 @@ import { AdBanner } from '../components/AdBanner';
 import { VideoCard } from '../components/VideoCard';
 import { Pagination } from '../components/Pagination';
 import { videos } from '../data/videos';
-import { ArrowUpDown, Zap, TrendingUp, Calendar, Clock, Star } from 'lucide-react';
+import { ArrowUpDown, Zap, TrendingUp, Calendar, Clock, Star, SlidersHorizontal } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { FilterSidebar, MobileFilterDrawer } from '../components/FilterSidebar';
 
 type AddedPeriod = '24h' | 'week' | 'month' | 'all';
 type DurationFilter = 'all' | '0-10' | '10-30' | '30+';
 type SortOption = 'recent' | 'views' | 'likes';
+
+import { SEO } from '../components/SEO';
 
 export const RecentPage: React.FC = () => {
   const [addedPeriod, setAddedPeriod] = useState<AddedPeriod>('all');
@@ -17,11 +20,12 @@ export const RecentPage: React.FC = () => {
   const [hdOnly, setHdOnly] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('recent');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const itemsPerPage = 12;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Vidéos Récentes - VibeTube';
+    // SEO component handles title
   }, []);
 
   const filteredVideos = useMemo(() => {
@@ -80,6 +84,10 @@ export const RecentPage: React.FC = () => {
       animate={{ opacity: 1 }}
       className="pb-20"
     >
+      <SEO 
+        title="Vidéos Récentes" 
+        description="Découvrez les dernières vidéos ajoutées sur VibeTube. Restez à jour avec le nouveau contenu." 
+      />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="py-6">
@@ -123,11 +131,26 @@ export const RecentPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10">
+          {/* Filter Sidebar (Desktop) */}
+          <FilterSidebar 
+            onApply={() => {}} 
+            onReset={() => {}} 
+          />
+
           {/* Main Content */}
           <div className="flex-grow min-w-0">
             {/* Filters & Sort Bar */}
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-surface/50 p-4 rounded-2xl border border-muted/10 mb-8">
               <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+                {/* Mobile Filter Button */}
+                <button 
+                  onClick={() => setIsFilterDrawerOpen(true)}
+                  className="lg:hidden flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20"
+                >
+                  <SlidersHorizontal size={14} />
+                  Filtres
+                </button>
+
                 {/* Sort Dropdown */}
                 <div className="flex items-center gap-2">
                   <ArrowUpDown size={16} className="text-muted" />
@@ -259,6 +282,10 @@ export const RecentPage: React.FC = () => {
           </aside>
         </div>
       </div>
+      <MobileFilterDrawer 
+        isOpen={isFilterDrawerOpen} 
+        onClose={() => setIsFilterDrawerOpen(false)} 
+      />
     </motion.div>
   );
 };

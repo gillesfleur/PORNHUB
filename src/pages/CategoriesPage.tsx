@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { AdBanner } from '../components/AdBanner';
 import { CategoryCard } from '../components/CategoryCard';
+import { PageSkeleton } from '../components/Skeletons';
 import { categories } from '../data/categories';
 import { LayoutGrid, List, Search, ArrowUpDown, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -9,10 +10,21 @@ import { Link } from 'react-router-dom';
 
 type SortOption = 'a-z' | 'z-a' | 'most-videos' | 'least-videos';
 
+import { SEO } from '../components/SEO';
+
 export const CategoriesPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('a-z');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredAndSortedCategories = useMemo(() => {
     let result = categories.filter(cat => 
@@ -37,12 +49,20 @@ export const CategoriesPage: React.FC = () => {
     return result;
   }, [searchQuery, sortBy]);
 
+  if (isLoading) {
+    return <PageSkeleton />;
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="container mx-auto px-4 py-6 pb-20"
     >
+      <SEO 
+        title="Catégories" 
+        description="Explorez toutes les catégories de vidéos sur VibeTube. Trouvez exactement ce que vous cherchez." 
+      />
       {/* Breadcrumb */}
       <Breadcrumb 
         items={[

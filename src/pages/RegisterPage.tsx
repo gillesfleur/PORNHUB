@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User, Lock, Eye, EyeOff, Mail, Chrome, Twitter, Loader2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+
+import { SEO } from '../components/SEO';
 
 export const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -16,10 +18,11 @@ export const RegisterPage: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Inscription - VibeTube';
+    // SEO component handles title
   }, []);
 
   // Password Strength Logic
@@ -53,12 +56,16 @@ export const RegisterPage: React.FC = () => {
     setTimeout(() => {
       setIsLoading(false);
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      setTimeout(() => {
+        setShowToast(false);
+        navigate('/login');
+      }, 2000);
     }, 1000);
   };
 
   return (
     <div className="min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-background to-background">
+      <SEO title="Inscription" />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

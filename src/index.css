@@ -31,6 +31,24 @@
     font-family: 'Inter', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
 
 @layer components {
@@ -43,7 +61,7 @@
 
   /* Custom Scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
@@ -51,9 +69,17 @@
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: var(--text-muted);
     border-radius: 10px;
-    opacity: 0.2;
+    border: 2px solid transparent;
+    background-clip: content-box;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
+    background-clip: content-box;
+  }
+}
+
+@layer utilities {
+  .overscroll-contain {
+    overscroll-behavior: contain;
   }
 }

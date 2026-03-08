@@ -6,25 +6,27 @@ interface LoadMoreButtonProps {
   clickCount: number;
   maxClicks?: number;
   targetUrl?: string;
+  isLoadingExternal?: boolean;
 }
 
 export const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({ 
   onLoadMore, 
   clickCount, 
   maxClicks = 3,
-  targetUrl = "/popular"
+  targetUrl = "/popular",
+  isLoadingExternal = false
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingInternal, setIsLoadingInternal] = useState(false);
+  const isLoading = isLoadingInternal || isLoadingExternal;
 
   const handleClick = () => {
     if (clickCount >= maxClicks) return;
     
-    setIsLoading(true);
-    // Simulate loading for 800ms
-    setTimeout(() => {
-      onLoadMore();
-      setIsLoading(false);
-    }, 800);
+    setIsLoadingInternal(true);
+    onLoadMore();
+    // We don't set isLoadingInternal to false here because the parent handles it
+    // But for safety if parent doesn't use isLoadingExternal:
+    setTimeout(() => setIsLoadingInternal(false), 800);
   };
 
   if (clickCount >= maxClicks) {

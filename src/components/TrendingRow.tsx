@@ -40,19 +40,27 @@ export const TrendingRow: React.FC<TrendingRowProps> = ({ videos }) => {
         </div>
       </div>
 
-      <div 
-        ref={scrollRef}
-        className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory no-scrollbar"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {videos.map((video) => (
-          <div 
-            key={video.id} 
-            className="min-w-[200px] md:min-w-[260px] snap-start"
-          >
-            <VideoCard video={video} variant="compact" />
-          </div>
-        ))}
+      <div className="relative">
+        {/* Left Shadow Indicator */}
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity md:hidden" />
+        
+        {/* Right Shadow Indicator */}
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none md:hidden" />
+
+        <div 
+          ref={scrollRef}
+          className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory no-scrollbar touch-pan-x"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {videos.map((video) => (
+            <div 
+              key={video.id} 
+              className="min-w-[200px] md:min-w-[260px] snap-start"
+            >
+              <VideoCard video={video} variant="compact" />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

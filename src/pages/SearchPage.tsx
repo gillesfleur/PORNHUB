@@ -19,13 +19,17 @@ import {
   Zap, 
   Filter,
   TrendingUp,
-  AlertCircle
+  AlertCircle,
+  SlidersHorizontal
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { FilterSidebar, MobileFilterDrawer } from '../components/FilterSidebar';
 
 type SearchTab = 'videos' | 'pornstars' | 'categories';
 type SortOption = 'popular' | 'recent' | 'top-rated' | 'longest' | 'shortest';
 type DurationFilter = 'all' | '0-10' | '10-30' | '30+';
+
+import { SEO } from '../components/SEO';
 
 export const SearchPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -36,12 +40,13 @@ export const SearchPage: React.FC = () => {
   const [durationFilter, setDurationFilter] = useState<DurationFilter>('all');
   const [hdOnly, setHdOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
   const itemsPerPage = 12;
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (query) {
-      document.title = `Résultats pour "${query}" - VibeTube`;
+      // SEO component handles title
     }
   }, [query]);
 
@@ -151,6 +156,10 @@ export const SearchPage: React.FC = () => {
       animate={{ opacity: 1 }}
       className="pb-20"
     >
+      <SEO 
+        title={`Recherche: ${query}`} 
+        description={`Résultats de recherche pour "${query}" sur VibeTube.`} 
+      />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="py-6">
@@ -260,8 +269,29 @@ export const SearchPage: React.FC = () => {
         </div>
 
         {/* Results Area */}
-        <AnimatePresence mode="wait">
-          {isEmpty ? (
+        <div className="flex flex-col lg:flex-row gap-8">
+          {activeTab === 'videos' && (
+            <FilterSidebar 
+              onApply={() => {}} 
+              onReset={() => {}} 
+            />
+          )}
+
+          <div className="flex-grow min-w-0">
+            {activeTab === 'videos' && (
+              <div className="lg:hidden mb-6">
+                <button 
+                  onClick={() => setIsFilterDrawerOpen(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20"
+                >
+                  <SlidersHorizontal size={14} />
+                  Filtres
+                </button>
+              </div>
+            )}
+
+            <AnimatePresence mode="wait">
+              {isEmpty ? (
             <motion.div 
               key="empty"
               initial={{ opacity: 0, y: 20 }}
@@ -356,6 +386,12 @@ export const SearchPage: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
+    </div>
+  </div>
+  <MobileFilterDrawer 
+        isOpen={isFilterDrawerOpen} 
+        onClose={() => setIsFilterDrawerOpen(false)} 
+      />
     </motion.div>
   );
 };

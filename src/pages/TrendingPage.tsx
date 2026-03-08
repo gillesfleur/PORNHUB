@@ -6,17 +6,21 @@ import { Pagination } from '../components/Pagination';
 import { videos } from '../data/videos';
 import { categories } from '../data/categories';
 import { actors } from '../data/actors';
-import { TrendingUp, Star, Award, ChevronRight } from 'lucide-react';
+import { TrendingUp, Star, Award, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { FilterSidebar, MobileFilterDrawer } from '../components/FilterSidebar';
+
+import { SEO } from '../components/SEO';
 
 export const TrendingPage: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = React.useState(false);
   const itemsPerPage = 12;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Tendances - VibeTube';
+    // SEO component handles title
   }, []);
 
   // Sort videos by views for trending effect
@@ -62,6 +66,10 @@ export const TrendingPage: React.FC = () => {
       animate={{ opacity: 1 }}
       className="pb-20"
     >
+      <SEO 
+        title="Tendances" 
+        description="Découvrez les vidéos qui font le buzz en ce moment sur VibeTube." 
+      />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="py-6">
@@ -83,6 +91,12 @@ export const TrendingPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-10">
+          {/* Filter Sidebar (Desktop) */}
+          <FilterSidebar 
+            onApply={() => {}} 
+            onReset={() => {}} 
+          />
+
           {/* Main Content */}
           <div className="flex-grow min-w-0">
             
@@ -121,6 +135,14 @@ export const TrendingPage: React.FC = () => {
                 <h2 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-2">
                   Aussi en tendance
                 </h2>
+                {/* Mobile Filter Button */}
+                <button 
+                  onClick={() => setIsFilterDrawerOpen(true)}
+                  className="lg:hidden flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20"
+                >
+                  <SlidersHorizontal size={14} />
+                  Filtres
+                </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
@@ -212,6 +234,10 @@ export const TrendingPage: React.FC = () => {
           </aside>
         </div>
       </div>
+      <MobileFilterDrawer 
+        isOpen={isFilterDrawerOpen} 
+        onClose={() => setIsFilterDrawerOpen(false)} 
+      />
     </motion.div>
   );
 };

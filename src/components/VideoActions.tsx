@@ -102,7 +102,7 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
         <div className="flex items-center bg-surface/40 rounded-xl p-1 border border-muted/10">
           <button 
             onClick={handleLike}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-bold text-sm ${
+            className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-all font-bold text-sm min-h-[44px] ${
               liked ? 'text-green-500 bg-green-500/10' : 'text-main hover:bg-muted/10'
             }`}
           >
@@ -115,7 +115,7 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
           
           <button 
             onClick={handleDislike}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-bold text-sm ${
+            className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-all font-bold text-sm min-h-[44px] ${
               disliked ? 'text-red-500 bg-red-500/10' : 'text-main hover:bg-muted/10'
             }`}
           >
@@ -127,20 +127,23 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
 
         {/* Group 2: Actions */}
         <div className="flex flex-wrap items-center gap-2">
-          <button 
+          <motion.button 
             onClick={() => setIsFavorite(!isFavorite)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl border border-muted/10 font-bold text-sm transition-all ${
+            whileTap={{ scale: 0.9 }}
+            animate={isFavorite ? { scale: [1, 1.3, 1] } : { scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className={`flex items-center gap-2 px-4 py-3 rounded-xl border border-muted/10 font-bold text-sm transition-all min-h-[44px] ${
               isFavorite ? 'text-red-500 bg-red-500/5 border-red-500/20' : 'text-main hover:bg-muted/10'
             }`}
           >
             <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
             <span className="hidden sm:inline">Favoris</span>
-          </button>
+          </motion.button>
 
           <div className="relative" ref={playlistRef}>
             <button 
               onClick={() => setShowPlaylistDropdown(!showPlaylistDropdown)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-muted/10 text-main font-bold text-sm hover:bg-muted/10 transition-all"
+              className="flex items-center gap-2 px-4 py-3 rounded-xl border border-muted/10 text-main font-bold text-sm hover:bg-muted/10 transition-all min-h-[44px]"
             >
               <Plus size={18} />
               <span className="hidden sm:inline">Playlist</span>
@@ -156,13 +159,13 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
                 >
                   <div className="text-[10px] font-black uppercase tracking-widest text-muted px-3 py-2">Ajouter à...</div>
                   {['Mes Préférées', 'À regarder plus tard', 'Soirée entre amis'].map(playlist => (
-                    <button key={playlist} className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main">
+                    <button key={playlist} className="w-full flex items-center justify-between px-3 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main min-h-[44px]">
                       {playlist}
                       <div className="w-4 h-4 border-2 border-muted/30 rounded" />
                     </button>
                   ))}
                   <div className="h-px bg-muted/10 my-1" />
-                  <button className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main">
+                  <button className="w-full flex items-center gap-2 px-3 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main min-h-[44px]">
                     <Plus size={16} />
                     Créer une playlist
                   </button>
@@ -174,7 +177,7 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
           <div className="relative" ref={shareRef}>
             <button 
               onClick={() => setShowShareDropdown(!showShareDropdown)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-muted/10 text-main font-bold text-sm hover:bg-muted/10 transition-all"
+              className="flex items-center gap-2 px-4 py-3 rounded-xl border border-muted/10 text-main font-bold text-sm hover:bg-muted/10 transition-all min-h-[44px]"
             >
               <Share2 size={18} />
               <span className="hidden sm:inline">Partager</span>
@@ -188,19 +191,19 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
                   exit={{ opacity: 0, y: 10 }}
                   className="absolute bottom-full mb-2 left-0 w-48 bg-surface border border-muted/20 rounded-2xl shadow-2xl z-50 p-2"
                 >
-                  <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main">
+                  <button className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main min-h-[44px]">
                     <LinkIcon size={16} />
                     Copier le lien
                   </button>
-                  <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main">
+                  <button className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main min-h-[44px]">
                     <Twitter size={16} />
                     Twitter
                   </button>
-                  <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main">
+                  <button className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main min-h-[44px]">
                     <MoreHorizontal size={16} />
                     Reddit
                   </button>
-                  <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main">
+                  <button className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors text-sm font-bold text-main min-h-[44px]">
                     <Mail size={16} />
                     Email
                   </button>
@@ -211,7 +214,7 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
 
           <button 
             onClick={() => setShowReportModal(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-muted/10 text-muted hover:text-red-500 hover:bg-red-500/5 hover:border-red-500/20 font-bold text-sm transition-all"
+            className="flex items-center gap-2 px-4 py-3 rounded-xl border border-muted/10 text-muted hover:text-red-500 hover:bg-red-500/5 hover:border-red-500/20 font-bold text-sm transition-all min-h-[44px]"
           >
             <Flag size={18} />
             <span className="hidden sm:inline">Signaler</span>
@@ -298,10 +301,10 @@ export const VideoActions: React.FC<VideoActionsProps> = ({ initialLikes }) => {
       <AnimatePresence>
         {showToast && (
           <motion.div 
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 50, opacity: 0 }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[110] bg-green-500 text-white px-6 py-3 rounded-full font-bold shadow-2xl flex items-center gap-2"
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 100, opacity: 0 }}
+            className="fixed bottom-8 right-8 z-[110] bg-green-500 text-white px-6 py-3 rounded-2xl font-bold shadow-2xl flex items-center gap-2"
           >
             <Check size={20} />
             Signalement envoyé avec succès

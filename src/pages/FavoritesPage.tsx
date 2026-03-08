@@ -10,6 +10,8 @@ import { AdBanner } from '../components/AdBanner';
 import { videos } from '../data/videos';
 import { Video } from '../types';
 
+import { SEO } from '../components/SEO';
+
 export const FavoritesPage: React.FC = () => {
   // Take 12 random videos for initial mock state
   const [favoriteVideos, setFavoriteVideos] = useState<Video[]>([]);
@@ -19,7 +21,7 @@ export const FavoritesPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Mes Favoris - VibeTube';
+    // SEO component handles title
     
     // Initialize with 12 random videos
     const shuffled = [...videos].sort(() => 0.5 - Math.random());
@@ -62,6 +64,7 @@ export const FavoritesPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO title="Mes Favoris" description="Retrouvez toutes vos vidéos préférées enregistrées sur VibeTube." />
       <Breadcrumb items={[{ label: 'Mon profil', path: '/profile' }, { label: 'Mes favoris', path: '/favorites' }]} />
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">

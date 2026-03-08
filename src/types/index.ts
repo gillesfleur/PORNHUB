@@ -50,7 +50,13 @@ export type Playlist = {
   name: string;
   videoCount: number;
   thumbnail: string;
+  description?: string;
+  isPrivate?: boolean;
+  createdAt?: string;
+  videos?: Video[];
 };
+
+export type UserRole = 'user' | 'admin';
 
 export type UserProfile = {
   id: string;
@@ -58,4 +64,5 @@ export type UserProfile = {
   email: string;
   avatar: string;
   isPremium: boolean;
+  role: UserRole;
 };

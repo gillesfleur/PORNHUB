@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { AdBanner } from '../components/AdBanner';
 import { Pagination } from '../components/Pagination';
+import { PageSkeleton } from '../components/Skeletons';
 import { actors } from '../data/actors';
 import { videos } from '../data/videos';
 import { Search, Star, Users, User, UserCheck, ArrowUpDown, ChevronRight, TrendingUp } from 'lucide-react';
@@ -11,7 +12,10 @@ import { motion, AnimatePresence } from 'motion/react';
 type SortOption = 'popular' | 'az' | 'za' | 'videos';
 type GenderFilter = 'all' | 'female' | 'male';
 
+import { SEO } from '../components/SEO';
+
 export const PornstarsPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [genderFilter, setGenderFilter] = useState<GenderFilter>('all');
   const [sortBy, setSortBy] = useState<SortOption>('popular');
@@ -20,7 +24,12 @@ export const PornstarsPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Pornstars - VibeTube';
+    // SEO component handles title
+    
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
   }, []);
 
   // Calculate total views for each actor
@@ -85,12 +94,20 @@ export const PornstarsPage: React.FC = () => {
     return views.toString();
   };
 
+  if (isLoading) {
+    return <PageSkeleton />;
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="pb-20"
     >
+      <SEO 
+        title="Pornstars" 
+        description="Retrouvez tous vos acteurs et actrices préférés sur VibeTube. Explorez leurs profils et vidéos." 
+      />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="py-6">

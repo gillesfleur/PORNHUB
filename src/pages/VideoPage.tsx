@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { videos } from '../data/videos';
 import { actors } from '../data/actors';
@@ -9,21 +9,39 @@ import { VideoActions } from '../components/VideoActions';
 import { VideoTags } from '../components/VideoTags';
 import { SuggestedVideos } from '../components/SuggestedVideos';
 import { VideoComments } from '../components/VideoComments';
+import { VideoPlayerSkeleton, VideoCardSkeleton, CommentSkeleton } from '../components/Skeletons';
 import { Eye, Calendar, Clock, CheckCircle2, ThumbsUp } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, useScroll, useSpring } from 'motion/react';
+
+import { SEO } from '../components/SEO';
 
 export const VideoPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [isLoading, setIsLoading] = useState(true);
   
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   const video = videos.find(v => 
     v.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') === slug
   );
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
     if (video) {
-      document.title = `${video.title} - VibeTube`;
+      // SEO component handles title
     }
+
+    return () => clearTimeout(timer);
   }, [video]);
 
   if (!video) {
@@ -38,12 +56,39 @@ export const VideoPage: React.FC = () => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            <VideoPlayerSkeleton />
+            <div className="space-y-4">
+              {[...Array(3)].map((_, i) => <CommentSkeleton key={i} />)}
+            </div>
+          </div>
+          <div className="hidden lg:block space-y-6">
+            <div className="h-6 bg-surface rounded w-32 mb-4 animate-pulse" />
+            {[...Array(6)].map((_, i) => <VideoCardSkeleton key={i} variant="horizontal" />)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="pb-12"
     >
+      <SEO 
+        title={video.title} 
+        description={`Regardez ${video.title} avec ${video.actor} sur VibeTube. Vidéo HD gratuite.`} 
+      />
+      <motion.div
+        className="fixed top-[56px] lg:top-[64px] left-0 right-0 h-[3px] bg-primary origin-left z-[60]"
+        style={{ scaleX }}
+      />
       {/* Player Section - Full Width Background */}
       <div className="bg-black">
         <div className="container mx-auto">

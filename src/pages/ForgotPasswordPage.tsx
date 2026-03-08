@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle2, Loader2, Send, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { SEO } from '../components/SEO';
 
 export const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ export const ForgotPasswordPage: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Mot de passe oublié - VibeTube';
+    // SEO component handles title
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,6 +44,10 @@ export const ForgotPasswordPage: React.FC = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-background to-background">
+      <SEO 
+        title="Mot de passe oublié" 
+        description="Réinitialisez votre mot de passe VibeTube pour accéder à vos vidéos et playlists préférées." 
+      />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

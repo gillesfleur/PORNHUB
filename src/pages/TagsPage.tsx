@@ -6,6 +6,8 @@ import { Search, Hash, TrendingUp } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 
+import { SEO } from '../components/SEO';
+
 export const TagsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -71,6 +73,10 @@ export const TagsPage: React.FC = () => {
       animate={{ opacity: 1 }}
       className="container mx-auto px-4 py-6 pb-20"
     >
+      <SEO 
+        title="Tous les Tags" 
+        description="Explorez toutes les catégories et tags de vidéos sur VibeTube." 
+      />
       {/* Breadcrumb */}
       <Breadcrumb 
         items={[
