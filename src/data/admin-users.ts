@@ -1,0 +1,297 @@
+export interface AdminUser {
+  id: string;
+  username: string;
+  email: string;
+  avatar: string;
+  joinedDate: string;
+  lastLogin: string;
+  commentsCount: number;
+  favoritesCount: number;
+  viewsCount: number;
+  reportsReceived: number;
+  status: 'Actif' | 'Suspendu' | 'Banni';
+  role: 'user' | 'admin';
+}
+
+export const adminUsers: AdminUser[] = [
+  {
+    id: 'u1',
+    username: 'AlexVibe',
+    email: 'alex@example.com',
+    avatar: 'https://picsum.photos/seed/u1/100/100',
+    joinedDate: '12/01/2024',
+    lastLogin: 'Il y a 2h',
+    commentsCount: 24,
+    favoritesCount: 156,
+    viewsCount: 1240,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u2',
+    username: 'Marie_92',
+    email: 'marie92@gmail.com',
+    avatar: 'https://picsum.photos/seed/u2/100/100',
+    joinedDate: '09/03/2026',
+    lastLogin: 'Il y a 12 min',
+    commentsCount: 2,
+    favoritesCount: 12,
+    viewsCount: 45,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u3',
+    username: 'Admin_Boss',
+    email: 'admin@tubesite.com',
+    avatar: 'https://picsum.photos/seed/u3/100/100',
+    joinedDate: '01/01/2023',
+    lastLogin: 'En ligne',
+    commentsCount: 450,
+    favoritesCount: 0,
+    viewsCount: 0,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'admin'
+  },
+  {
+    id: 'u4',
+    username: 'TrollMaster',
+    email: 'troll@darkweb.com',
+    avatar: 'https://picsum.photos/seed/u4/100/100',
+    joinedDate: '15/02/2024',
+    lastLogin: 'Il y a 4h',
+    commentsCount: 89,
+    favoritesCount: 2,
+    viewsCount: 120,
+    reportsReceived: 12,
+    status: 'Banni',
+    role: 'user'
+  },
+  {
+    id: 'u5',
+    username: 'LoverBoy',
+    email: 'lover@hotmail.fr',
+    avatar: 'https://picsum.photos/seed/u5/100/100',
+    joinedDate: '20/12/2023',
+    lastLogin: 'Il y a 1 jour',
+    commentsCount: 15,
+    favoritesCount: 890,
+    viewsCount: 5600,
+    reportsReceived: 1,
+    status: 'Suspendu',
+    role: 'user'
+  },
+  {
+    id: 'u6',
+    username: 'CinemaFan',
+    email: 'cine@yahoo.com',
+    avatar: 'https://picsum.photos/seed/u6/100/100',
+    joinedDate: '05/03/2026',
+    lastLogin: 'Il y a 3h',
+    commentsCount: 5,
+    favoritesCount: 45,
+    viewsCount: 230,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u7',
+    username: 'DarkKnight',
+    email: 'bat@gotham.com',
+    avatar: 'https://picsum.photos/seed/u7/100/100',
+    joinedDate: '10/11/2023',
+    lastLogin: 'Il y a 5h',
+    commentsCount: 0,
+    favoritesCount: 1200,
+    viewsCount: 8900,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u8',
+    username: 'Spammer_Bot',
+    email: 'bot123@spam.ru',
+    avatar: 'https://picsum.photos/seed/u8/100/100',
+    joinedDate: '08/03/2026',
+    lastLogin: 'Il y a 1 jour',
+    commentsCount: 1200,
+    favoritesCount: 0,
+    viewsCount: 10,
+    reportsReceived: 45,
+    status: 'Banni',
+    role: 'user'
+  },
+  {
+    id: 'u9',
+    username: 'Sophie_K',
+    email: 'sophie@orange.fr',
+    avatar: 'https://picsum.photos/seed/u9/100/100',
+    joinedDate: '22/01/2024',
+    lastLogin: 'Il y a 30 min',
+    commentsCount: 34,
+    favoritesCount: 67,
+    viewsCount: 890,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u10',
+    username: 'Mod_Sarah',
+    email: 'sarah.mod@tubesite.com',
+    avatar: 'https://picsum.photos/seed/u10/100/100',
+    joinedDate: '15/06/2023',
+    lastLogin: 'Il y a 1h',
+    commentsCount: 890,
+    favoritesCount: 10,
+    viewsCount: 100,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'admin'
+  },
+  {
+    id: 'u11',
+    username: 'LateNightWatcher',
+    email: 'night@gmail.com',
+    avatar: 'https://picsum.photos/seed/u11/100/100',
+    joinedDate: '01/02/2024',
+    lastLogin: 'Il y a 8h',
+    commentsCount: 12,
+    favoritesCount: 450,
+    viewsCount: 12000,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u12',
+    username: 'AngryUser',
+    email: 'angry@mail.com',
+    avatar: 'https://picsum.photos/seed/u12/100/100',
+    joinedDate: '14/02/2024',
+    lastLogin: 'Il y a 2 jours',
+    commentsCount: 56,
+    favoritesCount: 0,
+    viewsCount: 45,
+    reportsReceived: 8,
+    status: 'Suspendu',
+    role: 'user'
+  },
+  {
+    id: 'u13',
+    username: 'VibePremium_1',
+    email: 'premium1@vibe.com',
+    avatar: 'https://picsum.photos/seed/u13/100/100',
+    joinedDate: '10/10/2023',
+    lastLogin: 'Il y a 15 min',
+    commentsCount: 120,
+    favoritesCount: 3400,
+    viewsCount: 25000,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u14',
+    username: 'Newbie_2026',
+    email: 'newbie@outlook.com',
+    avatar: 'https://picsum.photos/seed/u14/100/100',
+    joinedDate: '09/03/2026',
+    lastLogin: 'À l\'instant',
+    commentsCount: 0,
+    favoritesCount: 1,
+    viewsCount: 5,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u15',
+    username: 'OldSchool_Fan',
+    email: 'old@aol.com',
+    avatar: 'https://picsum.photos/seed/u15/100/100',
+    joinedDate: '01/01/2020',
+    lastLogin: 'Il y a 1 semaine',
+    commentsCount: 340,
+    favoritesCount: 120,
+    viewsCount: 4500,
+    reportsReceived: 2,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u16',
+    username: 'Ghost_User',
+    email: 'ghost@hidden.com',
+    avatar: 'https://picsum.photos/seed/u16/100/100',
+    joinedDate: '05/05/2023',
+    lastLogin: 'Jamais',
+    commentsCount: 0,
+    favoritesCount: 0,
+    viewsCount: 0,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u17',
+    username: 'Report_Magnet',
+    email: 'magnet@trouble.com',
+    avatar: 'https://picsum.photos/seed/u17/100/100',
+    joinedDate: '12/12/2023',
+    lastLogin: 'Il y a 3h',
+    commentsCount: 45,
+    favoritesCount: 12,
+    viewsCount: 100,
+    reportsReceived: 25,
+    status: 'Suspendu',
+    role: 'user'
+  },
+  {
+    id: 'u18',
+    username: 'Admin_Support',
+    email: 'support@tubesite.com',
+    avatar: 'https://picsum.photos/seed/u18/100/100',
+    joinedDate: '01/01/2024',
+    lastLogin: 'Il y a 2h',
+    commentsCount: 1200,
+    favoritesCount: 0,
+    viewsCount: 0,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'admin'
+  },
+  {
+    id: 'u19',
+    username: 'Video_Collector',
+    email: 'collect@gmail.com',
+    avatar: 'https://picsum.photos/seed/u19/100/100',
+    joinedDate: '15/01/2024',
+    lastLogin: 'Il y a 1h',
+    commentsCount: 5,
+    favoritesCount: 12500,
+    viewsCount: 45000,
+    reportsReceived: 0,
+    status: 'Actif',
+    role: 'user'
+  },
+  {
+    id: 'u20',
+    username: 'Banned_Again',
+    email: 'banned@proxy.com',
+    avatar: 'https://picsum.photos/seed/u20/100/100',
+    joinedDate: '08/03/2026',
+    lastLogin: 'Il y a 12h',
+    commentsCount: 1,
+    favoritesCount: 0,
+    viewsCount: 2,
+    reportsReceived: 1,
+    status: 'Banni',
+    role: 'user'
+  }
+];
