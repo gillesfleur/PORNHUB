@@ -1,0 +1,412 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String         @id @default(cuid())
+  username        String         @unique
+  email           String         @unique
+  passwordHash    String
+  avatarUrl       String?
+  role            UserRole       @default(USER)
+  bio             String?
+  isActive        Boolean        @default(true)
+  isEmailVerified Boolean        @default(false)
+  lastLoginAt     DateTime?
+  preferences     Json?          @default("{}")
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  commentVotes    CommentVote[]
+  comments        Comment[]
+  favorites       Favorite[]
+  playlists       Playlist[]
+  assignedReports Report[]       @relation("AdminAssigned")
+  subscriptions   Subscription[]
+  videoVotes      VideoVote[]
+  watchHistory    WatchHistory[]
+
+  @@map("users")
+}
+
+model Video {
+  id                String          @id @default(cuid())
+  externalId        String
+  source            String
+  title             String
+  slug              String          @unique
+  description       String?
+  duration          Int?
+  durationFormatted String?
+  viewsExternal     Int             @default(0)
+  viewsInternal     Int             @default(0)
+  rating            Float           @default(0)
+  likes             Int             @default(0)
+  dislikes          Int             @default(0)
+  thumbnailUrl      String?
+  thumbnailLocal    String?
+  embedUrl          String?
+  videoUrl          String?
+  quality           Quality         @default(HD)
+  isFeatured        Boolean         @default(false)
+  isActive          Boolean         @default(true)
+  publishedAt       DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  categoryId        String?
+  comments          Comment[]
+  favorites         Favorite[]
+  playlistVideos    PlaylistVideo[]
+  actors            VideoActor[]
+  tags              VideoTag[]
+  votes             VideoVote[]
+  category          Category?       @relation(fields: [categoryId], references: [id])
+  watchHistory      WatchHistory[]
+
+  @@unique([source, externalId])
+  @@index([categoryId])
+  @@index([publishedAt])
+  @@index([viewsInternal])
+  @@index([rating])
+  @@map("videos")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  imageUrl    String?
+  videoCount  Int      @default(0)
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  videos      Video[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id         String     @id @default(cuid())
+  name       String
+  slug       String     @unique
+  videoCount Int        @default(0)
+  createdAt  DateTime   @default(now())
+  videos     VideoTag[]
+
+  @@map("tags")
+}
+
+model VideoTag {
+  videoId String
+  tagId   String
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@id([videoId, tagId])
+  @@map("video_tags")
+}
+
+model Actor {
+  id            String         @id @default(cuid())
+  name          String
+  slug          String         @unique
+  gender        Gender         @default(FEMALE)
+  bio           String?
+  imageUrl      String?
+  videoCount    Int            @default(0)
+  totalViews    Int            @default(0)
+  nationality   String?
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+  videos        VideoActor[]
+
+  @@map("actors")
+}
+
+model VideoActor {
+  videoId String
+  actorId String
+  actor   Actor  @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@id([videoId, actorId])
+  @@map("video_actors")
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  videoId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, videoId])
+  @@map("favorites")
+}
+
+model WatchHistory {
+  id            String   @id @default(cuid())
+  userId        String
+  videoId       String
+  watchedAt     DateTime @default(now())
+  watchDuration Int      @default(0)
+  completed     Boolean  @default(false)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video         Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@index([userId, watchedAt])
+  @@map("watch_histories")
+}
+
+model Playlist {
+  id          String          @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isPublic    Boolean         @default(true)
+  videoCount  Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  videos      PlaylistVideo[]
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("playlists")
+}
+
+model PlaylistVideo {
+  playlistId String
+  videoId    String
+  position   Int      @default(0)
+  addedAt    DateTime @default(now())
+  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  video      Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@id([playlistId, videoId])
+  @@map("playlist_videos")
+}
+
+model Comment {
+  id        String        @id @default(cuid())
+  userId    String
+  videoId   String
+  parentId  String?
+  content   String
+  likes     Int           @default(0)
+  dislikes  Int           @default(0)
+  status    CommentStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  votes     CommentVote[]
+  parent    Comment?      @relation("CommentToComment", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[]     @relation("CommentToComment")
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video     Video         @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@index([videoId, status])
+  @@map("comments")
+}
+
+model VideoVote {
+  id        String   @id @default(cuid())
+  userId    String
+  videoId   String
+  voteType  VoteType
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, videoId])
+  @@map("video_votes")
+}
+
+model CommentVote {
+  id        String   @id @default(cuid())
+  userId    String
+  commentId String
+  voteType  VoteType
+  createdAt DateTime @default(now())
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, commentId])
+  @@map("comment_votes")
+}
+
+model Report {
+  id            String       @id @default(cuid())
+  reporterName  String
+  reporterEmail String
+  reportType    ReportType
+  contentType   ContentType
+  contentId     String
+  description   String?
+  originalUrl   String?
+  status        ReportStatus @default(PENDING)
+  priority      Priority     @default(MEDIUM)
+  adminNotes    String?
+  resolvedAt    DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  assignedToId  String?
+  assignedTo    User?        @relation("AdminAssigned", fields: [assignedToId], references: [id])
+
+  @@map("reports")
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  userId    String
+  actorId   String
+  createdAt DateTime @default(now())
+  actor     Actor    @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, actorId])
+  @@map("subscriptions")
+}
+
+model AdPlacement {
+  id               String        @id @default(cuid())
+  name             String
+  placementType    PlacementType
+  width            Int?
+  height           Int?
+  pages            Json?         @default("[]")
+  adCode           String
+  isActive         Boolean       @default(true)
+  impressionsToday Int           @default(0)
+  clicksToday      Int           @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("ad_placements")
+}
+
+model ApiSource {
+  id                String      @id @default(cuid())
+  name              String
+  baseUrl           String
+  apiKey            String?
+  isActive          Boolean     @default(true)
+  syncFrequency     Int         @default(3600)
+  lastSyncedAt      DateTime?
+  totalVideosSynced Int         @default(0)
+  config            Json?       @default("{}")
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  importLogs        ImportLog[]
+
+  @@map("api_sources")
+}
+
+model ImportLog {
+  id             String       @id @default(cuid())
+  sourceId       String
+  videosImported Int          @default(0)
+  videosUpdated  Int          @default(0)
+  videosSkipped  Int          @default(0)
+  errors         Int          @default(0)
+  errorDetails   Json?        @default("[]")
+  startedAt      DateTime     @default(now())
+  completedAt    DateTime?
+  status         ImportStatus @default(RUNNING)
+  source         ApiSource    @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@map("import_logs")
+}
+
+model SiteSetting {
+  key         String      @id
+  value       String
+  type        SettingType @default(STRING)
+  description String?
+  updatedAt   DateTime    @updatedAt
+
+  @@map("site_settings")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  TRANS
+  OTHER
+}
+
+enum Quality {
+  SD
+  HD
+  FHD
+  UHD
+}
+
+enum CommentStatus {
+  PUBLISHED
+  PENDING
+  REJECTED
+  DELETED
+}
+
+enum VoteType {
+  LIKE
+  DISLIKE
+}
+
+enum ReportType {
+  ILLEGAL_CONTENT
+  SPAM
+  DMCA
+  OTHER
+}
+
+enum ContentType {
+  VIDEO
+  COMMENT
+}
+
+enum ReportStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  REJECTED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ImportStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum SettingType {
+  STRING
+  INTEGER
+  BOOLEAN
+  JSON
+}
+
+enum PlacementType {
+  BANNER
+  RECTANGLE
+  SKYSCRAPER
+  NATIVE
+  PREROLL
+}

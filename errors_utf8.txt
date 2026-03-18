@@ -1,0 +1,22 @@
+﻿prisma/seed.ts(41,5): error TS2322: Type '{ name: string; }' is not assignable to type 'ApiSourceWhereUniqueInput'.
+  Type '{ name: string; }' is not assignable to type '{ id: string; } & { id?: string | undefined; AND?: ApiSourceWhereInput | ApiSourceWhereInput[] | undefined; OR?: ApiSourceWhereInput[] | undefined; ... 11 more ...; importLogs?: ImportLogListRelationFilter | undefined; }'.
+    Property 'id' is missing in type '{ name: string; }' but required in type '{ id: string; }'.
+src/app/api/admin/reports/[id]/content/route.ts(17,13): error TS2339: Property 'id' does not exist on type 'Promise<{ id: string; }>'.
+src/app/api/admin/tags/merge/route.ts(43,47): error TS2353: Object literal may only specify known properties, and 'id' does not exist in type 'VideoTagWhereUniqueInput'.
+src/app/api/admin/tags/merge/route.ts(43,55): error TS2339: Property 'id' does not exist on type '{ videoId: string; tagId: string; }'.
+src/app/api/auth/me/route.ts(85,14): error TS2339: Property 'vote' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/app/api/comments/[id]/vote/route.ts(17,13): error TS2339: Property 'id' does not exist on type 'Promise<{ id: string; }>'.
+src/app/api/me/playlists/[id]/videos/route.ts(15,13): error TS2339: Property 'id' does not exist on type 'Promise<{ id: string; }>'.
+src/app/api/videos/[slug]/report/route.ts(36,9): error TS2353: Object literal may only specify known properties, and 'videoId' does not exist in type '(Without<ReportCreateInput, ReportUncheckedCreateInput> & ReportUncheckedCreateInput) | (Without<...> & ReportCreateInput)'.
+src/app/api/videos/[slug]/vote/route.ts(48,24): error TS2339: Property 'type' does not exist on type '{ id: string; createdAt: Date; userId: string; voteType: VoteType; videoId: string; }'.
+src/app/api/videos/[slug]/vote/route.ts(58,19): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type '(Without<VideoVoteUpdateInput, VideoVoteUncheckedUpdateInput> & VideoVoteUncheckedUpdateInput) | (Without<...> & VideoVoteUpdateInput)'.
+src/app/api/videos/[slug]/vote/route.ts(74,11): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'Without<VideoVoteCreateInput, VideoVoteUncheckedCreateInput> & VideoVoteUncheckedCreateInput'.
+src/components/RankingPage.tsx(49,40): error TS2488: Type 'any[] | undefined' must have a '[Symbol.iterator]()' method that returns an iterator.
+src/lib/api-client.ts(36,7): error TS7053: Element implicitly has an 'any' type because expression of type '"Authorization"' can't be used to index type 'HeadersInit'.
+  Property 'Authorization' does not exist on type 'HeadersInit'.
+src/lib/import-service.ts(47,5): error TS2322: Type '{ name: string; }' is not assignable to type 'CategoryWhereUniqueInput'.
+  Type '{ name: string; }' is not assignable to type '{ id: string; slug: string; } & { id?: string | undefined; slug?: string | undefined; AND?: CategoryWhereInput | CategoryWhereInput[] | undefined; ... 10 more ...; videos?: VideoListRelationFilter | undefined; }'.
+    Type '{ name: string; }' is missing the following properties from type '{ id: string; slug: string; }': id, slug
+src/lib/import-service.ts(69,7): error TS2322: Type '{ name: string; }' is not assignable to type 'TagWhereUniqueInput'.
+  Type '{ name: string; }' is not assignable to type '{ id: string; slug: string; } & { id?: string | undefined; slug?: string | undefined; AND?: TagWhereInput | TagWhereInput[] | undefined; OR?: TagWhereInput[] | undefined; ... 4 more ...; videos?: VideoTagListRelationFilter | undefined; }'.
+    Type '{ name: string; }' is missing the following properties from type '{ id: string; slug: string; }': id, slug
